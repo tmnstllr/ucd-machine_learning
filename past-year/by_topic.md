@@ -176,3 +176,97 @@ d) A single neuron has the equation of z = wx + b, which is essentially a linear
 # Ensembles
 
 4)a)
+
+1. Mitigate errors - diversity from different models in an ensemble can cancel out errors as some models make certain mistakes whereas some do not.
+2. Better fit to data - different models are capable of capturing different aspects of the data, resulting in a comprehensive view of the data in the ensemble.
+3. Prevent overfitting - if training a model instance on several subsets of the data might lead to overfitting, using different models will prevent that.
+4. More confidence in prediction - if all different models agree on the same prediction, the ensemble can be more confident in its correctness.
+5. Stability - a diverse enesemble is less affected by outliers when there are models that are insensitive to outliers.
+6. Less sensitive to data distribution - a diverse ensemble does not assume distribution of a data due to many different models.
+
+b) Bagging's first step is to perform a random sampling with replacement from the dataset, also known as bootstrap sampling. All data points will have a uniform possibility of being selected. For all subsamples are sampled from the dataset, they might contain multiple instances of the same data point as the sampling is with replacement. Some data points in the full dataset might also never get included in any of the subsamples, known as "out-of-bag" samples.
+
+c) Bootstrap resampling introduces diversity by producing different versions of data subsamples because KNN is not sensitive to data point variation.
+
+Use feature subsapces instead. This involves randomly selecting a subset of features WITHOUT replacement. Each subsample will have a unique set of features that is part of the full training data. A KNN is trained for each subsample, so each KNN instance looks at a different aspect of the data.
+
+d) Done
+
+h) Bootstrap aggregation....
+
+a) Bootstrap aggregation, feature subspaces...
+
+4)a)
+
+1. Start with a training data with equal weights for all points, 1/N where N = total number of data points
+2. For t = 1 to T, where T is the maximum ensemble size
+   1. Randomly sample L examples from the full training set WITH replacement based on the current weights, where L < N. The probability of selecting an example is proportional to its weight.
+   2. Train an instance of a classifier on this sample e.g. decision tree
+   3. Identify misclassified examples
+   4. Increase weights for misclassified examples, decrease weights for correctly classified examples
+3. Output final model based on all instances of the classifier, which are weighted according to the error rate
+
+...
+
+4b) Bias is a systematic error in a particular direction, caused by over-simplifying assumptions made by model on the data distribution. It happens when model is too simple and is unable to capture the complex data distribution.
+
+Variance is the variability in model prediction, caused by the model's sensitivity to noise in the dataset. It happens when a model is too complex and captures random noise in addition to the patterns.
+
+Models of high bias but low variance tend to underfit.
+Models of low bias but high variance tend to overfit.
+
+Bagging - reduce variance but not really bias because it possibly leads to  many out-of-bag samples, reducing the noise in data overall.
+
+Boosting - mainly reduces bias because it forces models to relearn misclassified examples, telling the model that its current assumption is incorrect.
+
+Feature subspaces - reduces variance because it only shows a subset of features to a model instance.
+
+# Clustering
+
+e) Done
+
+4)a) Done
+
+3)a)
+
+1. Sensitivity to initial centroid - K-means performance is highly sensitive to the positions of the initial centroids. Different initialisations might lead to different final clusters.
+
+2. Sensitivity to K parameter - the performance of K-means is highly dependent on the specified K parameter. It risks smearing of clusters if K is too small and overclustering if K is too large.
+
+Two ways:
+1. One run per iteration
+We run the K-means algorithm for t = 1 to T iterations, where `n_init=1`:
+Train the K-means algorithm with different random states (initialisation)
+
+Then use the `inertia_` property in K-means to check the quality of clustering, which is basically just sum of squared error (SSE)
+
+Select the one with the lowest inertia
+
+2. Multiple runs
+
+Use the `n_init=T` where T is the number of initialisatons. Then access the `inertia_` property, which will return the lowest inertia score.
+
+b) ...
+
+c) Describe KNN...
+
+5)a) ...
+
+b) Done
+
+c) The silhouette method ranges between -1 and 1, where high values indicate well-defined clusters, a score near 0 indicates overlapping clusters, and negative values indicate data points might have been assigned to the wrong cluster.
+
+1. For each data point i in the dataset:
+   1. a(i) = average distance from the data point to other data points in the same cluster
+   2. b(i) = the average distance from the data point to data points in the NEAREST cluster (the nearest cluster that the data point does not belong to)
+   3. s(i) = silhouette score (b(i) - a(i)) / max(a(i), b(i))
+2. Average all s(i)
+
+# General/Other
+f) Some of the features might be redundant where they are highly correlated and do not provide any extra information.
+
+Or: there are dimensionality reduction techniques such as PCA and feature selection which reduces the dataset features without changing the number of examples. The resulting dataset is more compact and yet retains its representativeness.
+
+ii) Poisonous food
+FP - saying food is poisonous when it's not - affect business costs
+FN - saying food is not poisonous when it is - lethal
